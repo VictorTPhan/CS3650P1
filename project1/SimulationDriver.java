@@ -34,17 +34,17 @@ public class SimulationDriver {
     }
 
     public static void main(String[] args) {
-        QuestionType type = QuestionType.SINGLE_CHOICE;
+        QuestionType type = QuestionType.MULTIPLE_CHOICE;
         questions.add(
-                new SingleChoiceQuestion(
+                new MultipleChoiceQuestion(
                         "Please pick B.",
-                        Arrays.asList(new String[] { "Bruh", "No", "Hi", "Bye" }),
-                        "No"));
+                        new ArrayList<String>(Arrays.asList(new String[] { "Bruh", "No", "Hi", "Bye" })),
+                        new ArrayList<String>(Arrays.asList(new String[] { "Bruh", "No" }))));
         questions.add(
-                new SingleChoiceQuestion(
+                new MultipleChoiceQuestion(
                         "Please pick A.",
-                        Arrays.asList(new String[] { "1", "2", "3", "4" }),
-                        "1"));
+                        new ArrayList<String>(Arrays.asList(new String[] { "1", "2", "3", "4" })),
+                        new ArrayList<String>(Arrays.asList(new String[] { "1", "2" }))));
 
         VotingService service = new VotingService(generateStudents(10, type), type, questions);
         service.beginTest();
