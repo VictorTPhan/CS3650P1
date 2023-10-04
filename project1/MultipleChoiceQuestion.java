@@ -14,4 +14,9 @@ public class MultipleChoiceQuestion extends Question {
         Set<String> submittedAnswers = new HashSet<String>(answer.getAnswer());
         return officialAnswers.equals(submittedAnswers);
     }
+
+    @Override
+    public String revealAnswer() {
+        return officialAnswers.toString();
+    }
 }

@@ -19,15 +19,20 @@ public abstract class Question {
         return question;
     }
 
-    public abstract boolean isAnswerCorrect(IAnswer answer);
-
     public String toString() {
         String output = "";
         output += question;
         output += "\n";
+        char answerLetter = 'A';
+        answerLetter--;
         for (int i = 0; i < potentialAnswers.size(); i++) {
-            output += (i + 1) + ". " + potentialAnswers.get(i) + "\n";
+            answerLetter++;
+            output += answerLetter + ". " + potentialAnswers.get(i) + "\n";
         }
         return output;
     }
+
+    public abstract boolean isAnswerCorrect(IAnswer answer);
+
+    public abstract String revealAnswer();
 }

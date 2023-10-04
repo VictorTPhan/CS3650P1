@@ -15,4 +15,9 @@ public class SingleChoiceQuestion extends Question {
         String submittedAnswer = answer.getAnswer().get(0);
         return submittedAnswer.equals(officialAnswer);
     }
+
+    @Override
+    public String revealAnswer() {
+        return officialAnswer;
+    }
 }

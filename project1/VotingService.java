@@ -4,52 +4,71 @@ import java.util.*;
 
 public class VotingService {
     List<Student> students;
-    List<Question> questions;
-    QuestionType questionType; // I'm not sure if this is going to be used
-    Map<String, List<Boolean>> resultBoard = new HashMap<String, List<Boolean>>();
+    Map<String, IAnswer> resultBoard = new HashMap<String, IAnswer>();
+    Question question;
 
-    public VotingService(List<Student> students, QuestionType questionType, List<Question> questions) {
+    public VotingService(List<Student> students, Question question) {
         this.students = students;
-        this.questions = questions;
-        this.questionType = questionType;
+        this.question = question;
 
-        for (Student student : this.students) {
-            resultBoard.put(student.getUID(), new ArrayList<Boolean>());
+        for (Student s : students) {
+            resultBoard.put(s.getUID(), null);
         }
     }
 
-    public void beginTest() {
-        for (int i = 0; i < questions.size(); i++) {
-            askQuestion(i + 1, questions.get(i));
+    public void askQuestion() {
+        System.out.println(question.toString());
+        for (Student s : students) {
+            resultBoard.put(s.getUID(), s.answerQuestion(question));
         }
+
         System.out.println(this.toString());
-    }
-
-    public void askQuestion(int questionNum, Question q) {
-        System.out.println(questionNum + ". " + q.toString());
-        for (Student student : this.students) {
-            resultBoard.get(student.getUID()).add(q.isAnswerCorrect(student.answerQuestion(q)));
-        }
     }
 
     public String toString() {
         String output = "";
-        output += "Results \n";
-        output += "Student ID" + "\t";
+        output += "Results: \n";
 
-        for (int i = 0; i < questions.size(); i++) {
-            output += (i + 1) + "\t";
+        Map<String, Integer> stats = new HashMap<String, Integer>();
+        for (String potentialAnswer : question.getPotentialAnswers()) {
+            stats.put(potentialAnswer, 0);
         }
 
-        output += "\n";
-
-        for (String UID : resultBoard.keySet()) {
-            output += UID + "\t";
-            for (Boolean b : resultBoard.get(UID)) {
-                output += b + "\t";
+        for (String studentUID : resultBoard.keySet()) {
+            IAnswer answer = resultBoard.get(studentUID);
+            List<String> answers = answer.getAnswer();
+            for (String s : answers) {
+                stats.put(s, stats.get(s) + 1);
             }
+        }
+
+        for (String potentialAnswer : stats.keySet()) {
+            output += potentialAnswer + ": " + stats.get(potentialAnswer) + "\t";
             output += "\n";
         }
+
+        output += "\nOfficial Answer: ";
+        output += showOfficialAnswer() + "\n\n";
+
+        output += showStudentAnswers();
+
+        return output;
+    }
+
+    private String showOfficialAnswer() {
+        return question.revealAnswer();
+    }
+
+    private String showStudentAnswers() {
+        String output = "";
+        output += "Student Answers: \n";
+        output += "UID                                     Correct?\tAnswers\n";
+
+        for (Student s : students) {
+            IAnswer answer = resultBoard.get(s.getUID());
+            output += s.getUID() + "\t" + question.isAnswerCorrect(answer) + "\t\t" + answer.getAnswer() + "\n";
+        }
+
         return output;
     }
 }
