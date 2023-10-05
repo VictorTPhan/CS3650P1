@@ -13,7 +13,7 @@ public class SingleChoiceAnswerMaker implements IAnswerMaker {
         // basically, pick a random answer from the potential answers.
         Random r = new Random();
         List<String> potentialAnswers = q.getPotentialAnswers();
-        String chosenAnswer = potentialAnswers.get(r.nextInt(potentialAnswers.size() - 1));
+        String chosenAnswer = potentialAnswers.get(r.nextInt(potentialAnswers.size()));
 
         // create the IAnswer object
         return new SingleChoiceAnswer(chosenAnswer);
