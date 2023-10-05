@@ -1,7 +1,10 @@
-package project1;
+package project1.Question;
 
 import java.util.*;
 
+import project1.Answer.IAnswer;
+
+// abstract class due to need for shared code
 public abstract class Question {
     protected List<String> potentialAnswers;
     protected String question;
@@ -21,8 +24,10 @@ public abstract class Question {
 
     public String toString() {
         String output = "";
-        output += question;
+        output += question; // display question
         output += "\n";
+
+        // print out all answers, labeled from A onwards
         char answerLetter = 'A';
         answerLetter--;
         for (int i = 0; i < potentialAnswers.size(); i++) {
@@ -32,7 +37,9 @@ public abstract class Question {
         return output;
     }
 
+    // to be implemented by subclasses
     public abstract boolean isAnswerCorrect(IAnswer answer);
 
+    // to be implemented by subclasses
     public abstract String revealAnswer();
 }
